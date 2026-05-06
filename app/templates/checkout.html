@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+
+<h1>Checkout</h1>
+
+<div class="basket-item checkout-card">
+
+    <!-- Total price -->
+    <div class="checkout-header-row">
+        <p class="checkout-total">Total: £{{ "{:,}".format(total_price) }}</p>
+    </div>
+
+    <!-- Validation errors -->
+    {% if errors %}
+    <ul style="color:red;">
+        {% for error in errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <!-- Payment form -->
+    <form method="POST" class="checkout-form">
+        <label>Name on Card:</label>
+        <input type="text" name="name">
+
+        <label>Card Number:</label>
+        <input type="text" name="card_number">
+
+        <label>Expiry (MM/YY):</label>
+        <input type="text" name="expiry">
+
+        <label>CVV:</label>
+        <input type="text" name="cvv">
+
+        <button type="submit" class="button button-green">Pay Now</button>
+    </form>
+
+    <div class="checkout-bottom-row">
+        <a href="{{ url_for('view_basket') }}" class="button button-red checkout-return">
+            ← Return to Basket
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

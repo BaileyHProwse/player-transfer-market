@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Basket{% endblock %}
+
+{% block content %}
+
+<h1>Your Basket</h1>
+
+
+{% if basket_items %}
+
+    <!-- List of basket items -->
+    {% for item in basket_items %}
+    <div class="basket-item">
+        <img src="{{ url_for('static', filename=item.player.image) }}"alt="{{ item.player.name }}"class="basket-image">
+
+
+        <div class="basket-details">
+            <h2>{{ item.player.name }}</h2>
+            <p>Quantity: {{ item.quantity }}</p>
+            <p>Price each: £{{ "{:,}".format(item.player.price) }}</p>
+            <p>Total: £{{"{:,}".format(item.item_total) }}</p>
+
+            <!-- Removing item controls -->
+            <div class="remove-buttons">
+                <a href="{{ url_for('remove_item', id=item.player.id) }}" class="button button-red"> Remove One Item </a><br>
+                <a href="{{ url_for('remove_all', id=item.player.id) }}" class="button button-red">Remove All</a>
+            </div>
+        </div>   
+    </div> 
+
+    {% endfor %}
+
+    <!-- Total and actions -->
+    <h2>Grand Total: £{{ "{:,}".format(total_price) }}</h2>
+    <div>
+        <a href="{{ url_for('clear_basket') }}" class="button button-yellow"> Clear Basket </a>
+    </div>
+
+    <div>
+        <a href="{{ url_for('checkout') }}" class="button button-green">Proceed to Checkout</a>
+    </div>
+    
+
+{% else %}
+    <div class="basket-item">
+        <p>Your basket is empty.</p>
+    </div>
+    <div>
+    <a href="{{ url_for('index') }}" class= "button button-red">← Continue Shopping</a>
+    </div>
+{% endif %}
+<br>
+
+{% endblock %}

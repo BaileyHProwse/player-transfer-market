@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Player Details{% endblock %}
+
+{% block content %}
+
+    <div class="player-top-section">
+
+    <div class="player-image-box">
+        <h2 class="player-name">{{ player.name }}</h2>
+        <img src="{{ url_for('static', filename=player.image) }}" class="player-image-box-img">
+    </div>
+
+    <!-- Review submission form -->
+    <div class="review-form-container">
+        <h2>Leave a Review</h2>
+
+        <form method="POST" action="{{ url_for('add_review', player_id=player.id) }}" class="review-form">
+
+            <label>Your Name:</label>
+            <input type="text" name="name">
+
+            <label>Rating:</label>
+            <select name="rating">
+                <option value="5">★★★★★</option>
+                <option value="4">★★★★☆</option>
+                <option value="3">★★★☆☆</option>
+                <option value="2">★★☆☆☆</option>
+                <option value="1">★☆☆☆☆</option>
+            </select>
+
+            <label>Your Review:</label>
+            <textarea name="comment"></textarea>
+
+            <button type="submit" class="button button-green">Submit Review</button>
+        </form>
+    </div>
+
+    </div>
+
+    <!-- Player info -->
+    <div class = "player-info">
+        <p>{{ player.long_description }}</p>
+        <p><b>Price:</b> £{{ "{:,}".format(player.price) }}</p>
+        <p><b>Environmental Impact:</b> {{ player.environmental_impact }}/10</p>
+        <p><b>NOTE:</b> Scores are based on estimated travel-related carbon footprint (domestic, European and international matches). <a href="{{ url_for('impact_info') }}">Learn more</a></p>
+        
+        <form action="{{ url_for('add_player', id=player.id) }}" method="POST" class="quantity-form">
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" min="1" value="1">
+
+            <button type="submit" class="add-button">Add to basket</button>
+        </form>
+    </div>
+
+    <!-- Reviews section -->
+    <div class ="player-reviews">
+
+    {% if avg_rating %}
+        <h3>Average Rating: {{ "%.1f"|format(avg_rating) }} / 5</h3>
+    {% else %}
+        <h3>Average Rating: No reviews yet</h3>
+    {% endif %}
+
+
+        <h2>Reviews</h2>
+
+        {% if player.reviews %}
+            {% for review in player.reviews %}
+                <div class="review-box">
+                    <p><strong>{{ review.name or "Anonymous" }}</strong></p>
+                    <p>{{ "★" * review.rating }}{{ "☆" * (5 - review.rating) }}</p>
+                    <p>{{ review.comment }}</p>
+                    <p class="review-date">{{ review.date.strftime("%d %b %Y") }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No reviews yet - be the first!</p>
+        {% endif %}
+    </div>
+
+
+{% endblock %}

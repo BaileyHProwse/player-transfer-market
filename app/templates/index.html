@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<!-- Sorting form -->
+<form method="GET" action="{{ url_for('index') }}">
+    <label for="sort">Sort players by:</label>
+
+    <select name="sort" id="sort">
+        <option value="">Default</option>
+        <option value="name" {% if sort_by == "name" %}selected{% endif %}>Name A-Z</option>
+        <option value="price_low" {% if sort_by == "price_low" %}selected{% endif %}>Price Low to High</option>
+        <option value="price_high" {% if sort_by == "price_high" %}selected{% endif %}>Price High to Low</option>
+        <option value="impact_low" {% if sort_by == "impact_low" %}selected{% endif %}>Environmental Impact Low to High</option>
+        <option value="impact_high" {% if sort_by == "impact_high" %}selected{% endif %}>Environmental Impact High to Low</option>
+    </select>
+
+    <button class="sort-button">Sort</button>
+</form>
+
+<h2 class="page-title">Players</h2>
+
+<!-- The player grid -->
+<div class="player-grid">
+    {% for player in players %}
+    <div class="player-card" data-player-id="{{ player.id }}">
+        <h2>{{ player.name }}</h2>
+
+        <img src="{{ url_for('static', filename=player.image)}}" alt="{{ player.name }}" width="200">
+        <p>{{ player.short_description }}</p>
+        <p class="price"> Price: £{{ "{:,}".format(player.price) }}</p>
+        <p>Environmental Impact: {{ player.environmental_impact }}/10</p>
+
+        <div class="long-description"></div>
+
+        <a class="button button-green" href="{{ url_for('single_player', id=player.id) }}">View this Player</a>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Hover effect -->
+<script>
+    const playerCards = document.querySelectorAll(".player-card");
+
+    playerCards.forEach(card => {
+        card.addEventListener("mouseenter", function () {
+            const playerId = this.dataset.playerId;
+            const descriptionBox = this.querySelector(".long-description");
+
+            fetch(`/player_info/${playerId}`)
+                .then(response => response.json())
+                .then(data => {
+                    descriptionBox.textContent = data.long_description;
+                });
+        });
+
+        card.addEventListener("mouseleave", function () {
+            const descriptionBox = this.querySelector(".long-description");
+            descriptionBox.textContent = "";
+        });
+    });
+</script>
+
+{% endblock %}

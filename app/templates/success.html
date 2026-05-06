@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Success{% endblock %}
+
+{% block content %}
+
+<h1>Payment Successful!</h1>
+
+<div class="basket-item success-card">
+
+    <p>Total payment of <strong>£{{"{:,}".format (total_price) }}</strong> has been charged to your card.</p>
+
+    <p>Thank you for shopping with us, delivery is estimated to be <strong>2-3</strong> business days!</p>
+
+    <a href="{{ url_for('index') }}" class="button button-green">
+        Back to Home
+    </a>
+
+</div>
+
+{% endblock %}

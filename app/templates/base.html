@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Base template -->
+    <title>{% block title %}Player Transfer Market{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Header and Navbar -->
+    <header class="title">
+        <h1>Player Transfer Market </h1>
+
+        <nav class="navbar">
+            <a href="{{ url_for('index') }}">Home</a> |
+            <a href="{{ url_for('view_basket') }}">
+                Basket ({{ basket_count }})
+            </a>
+        </nav>
+    </header>
+
+    <hr>
+
+    <!--Specific Page Content-->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+</body>
+</html>

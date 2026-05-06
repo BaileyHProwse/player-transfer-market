@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Added to Basket{% endblock %}
+
+{% block content %}
+
+<!-- Confirmation card -->
+<div class="added-card">
+
+    <h2>Item Added to Basket</h2>
+
+    <p class="added-text">
+        You added <strong>{{ quantity }}</strong> × <strong>{{ player.name }}</strong> to your basket.
+    </p>
+
+    <!-- Nav buttons -->
+    <div class="added-buttons">
+        <a href="/" class="button button-green">← Continue Shopping</a>
+        <a href="{{ url_for('view_basket') }}" class="button button-yellow">View Basket</a>
+    </div>
+
+</div>
+
+{% endblock %}
